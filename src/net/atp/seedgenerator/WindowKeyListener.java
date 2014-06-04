@@ -1,8 +1,11 @@
 package net.atp.seedgenerator;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,7 +39,7 @@ public class WindowKeyListener implements KeyListener{
                 Window.toggleAnimated();
                 break;
             }
-            case (KeyEvent.VK_G):{
+            case (KeyEvent.VK_R):{
                 ImageController.setRandomSeed();
                 break;
             }
@@ -50,8 +53,9 @@ public class WindowKeyListener implements KeyListener{
 
                     File log = new File("seeds.txt");
                     try{
-                        if(log.exists()==false){
+                        if(!log.exists()){
                             System.out.println("File not found. New file created.");
+                            //noinspection ResultOfMethodCallIgnored
                             log.createNewFile();
                         }
                         PrintWriter out = new PrintWriter(new FileWriter(log, true));
@@ -64,6 +68,35 @@ public class WindowKeyListener implements KeyListener{
 
                     JOptionPane.showMessageDialog(null, "Seed saved.");
                 }
+                break;
+            }
+            case (KeyEvent.VK_I):{
+                JFileChooser chooser = new JFileChooser();
+                int result = chooser.showSaveDialog(null);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File f = chooser.getSelectedFile();
+
+                    if (!f.getAbsolutePath().endsWith(".png"))
+                        f = new File(f.getAbsolutePath().concat(".png"));
+
+                    try{
+                        BufferedImage resizedImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
+                        Graphics2D g = resizedImage.createGraphics();
+                        g.drawImage(ImageController.img, 0, 0, 256 , 256, null);
+                        g.dispose();
+
+                        ImageIO.write(resizedImage, "PNG", f);
+                        JOptionPane.showMessageDialog(null, "Saved image successfully!");
+                    } catch (IOException ie) {
+                        ie.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Could not save image.");
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Did not save image.");
+                }
+
                 break;
             }
             /*case (KeyEvent.VK_LEFT):{

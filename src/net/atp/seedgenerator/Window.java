@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 public class Window extends Canvas {
 
-    private static BufferedImage displayImg;
+    public static BufferedImage displayImg;
 
     public static boolean isAnimated = false;
 
@@ -91,8 +91,9 @@ public class Window extends Canvas {
         g.drawString("RIGHT - increment current seed (when paused)", indent, 610);
         g.drawString("R - create random seed", indent, 625);
         g.drawString("S - set seed", indent, 640);
-        g.drawString("W - write seed to disk", indent, 655);
-        g.drawString("(only write if it's not pure noise!!)", indent, 670);
+        g.drawString("I - save image", indent, 655);
+        g.drawString("W - write seed to disk", indent, 670);
+        g.drawString("(only write if it's not pure noise!!)", indent, 685);
     }
 
     /**
