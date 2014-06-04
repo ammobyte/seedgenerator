@@ -10,10 +10,7 @@ public class Window extends Canvas {
     private static BufferedImage displayImg;
 
     public static boolean isAnimated = false;
-    private static long currentFrame = 0;
-    private static int syncTime = 0;
 
-    private static JFrame frame;
     private static Window window;
 
     private static BufferedImage background;
@@ -23,8 +20,6 @@ public class Window extends Canvas {
      * ex: "59 per second\t457 total"
      */
     private static String ips = "";
-    private static int modeInc = 0;
-    private static String mode = "Mode: Random colorful";
 
     public static void initWindow() {
         displayImg = new BufferedImage(300, 300, BufferedImage.TYPE_INT_RGB);
@@ -37,10 +32,10 @@ public class Window extends Canvas {
 
         window = new Window();
 
-        frame = new JFrame("Seed Generator");
+        JFrame frame = new JFrame("Seed Generator");
         frame.setSize(500, 800);
         frame.setResizable(false);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         window.addKeyListener(new WindowKeyListener());
         frame.add(window);
         frame.setVisible(true);
@@ -79,6 +74,7 @@ public class Window extends Canvas {
 
         //Info
         g.setColor(Color.white);
+        long currentFrame = 0;
         g.drawString("" + currentFrame, indent, 535);
         if (isAnimated){
             g.drawString(ips, indent, 550);
@@ -87,12 +83,13 @@ public class Window extends Canvas {
             g.drawString("N/A", indent, 550);
             g.setColor(Color.white);
         }
+        String mode = "Mode: Sequential binary";
         g.drawString(mode, indent, 565);
 
         //Controls
         g.drawString("SPACE - Toggle animation", indent, 595);
-        g.drawString("LEFT - decrement current seed (when paused)", indent, 610);
-        g.drawString("RIGHT - increment current seed (when paused)", indent, 625);
+        g.drawString("RIGHT - increment current seed (when paused)", indent, 610);
+        g.drawString("R - create random seed", indent, 625);
         g.drawString("S - set seed", indent, 640);
         g.drawString("W - write seed to disk", indent, 655);
         g.drawString("(only write if it's not pure noise!!)", indent, 670);
@@ -102,9 +99,11 @@ public class Window extends Canvas {
      * Runs a loop to modify and display images
      */
     public static void loop() {
+        //noinspection InfiniteLoopStatement
         while (true) {
             if (isAnimated) {
                 nextFrame();
+                int syncTime = 0;
                 ImageController.syncSpeed(syncTime);
             }
 
@@ -122,7 +121,7 @@ public class Window extends Canvas {
 	 */
 
     public static void toggleAnimated(){
-        isAnimated = isAnimated == false;
+        isAnimated = !isAnimated;
     }
 
     public static boolean isAnimated(){
@@ -131,14 +130,6 @@ public class Window extends Canvas {
 
     public static void nextFrame(){
         ImageController.increaseSeed();
-    }
-
-    public static void previousFrame(){
-        currentFrame--;
-    }
-
-    public static void setFrame(long frame){
-        currentFrame = frame;
     }
 
     public static void setIps(String ips){
