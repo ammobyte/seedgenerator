@@ -8,12 +8,10 @@ public class ImageController {
 
     public static BufferedImage img;
     public static Graphics2D g2d;
-    private static long total = 0;
     private static long counter = 0;
     private static long lastCheck = System.currentTimeMillis();
 
     //seed manipulation variables
-    public static final int VALUES = 2;
     public static final int WIDTH = 16;
     public static final int HEIGHT = 16;
     public static final int[] addArray = new int[WIDTH*HEIGHT];
@@ -64,7 +62,6 @@ public class ImageController {
 
     /**
      * While animating, this should be called every time an image is created.
-     * @param time
      */
     public static void syncSpeed(int time) {
         counter++;
@@ -79,15 +76,9 @@ public class ImageController {
             try {
                 Thread.sleep(time - (System.currentTimeMillis() - lastCheck));
             } catch (Exception e){
-
+                e.printStackTrace();
             }
         }
-    }
-
-    public static void printArray(){
-        for(int r = 0; r < sumArray.length; r++)
-            System.out.print(seed[r]+" ");
-        System.out.println();
     }
 
     public static void increaseSeed(){
@@ -110,9 +101,7 @@ public class ImageController {
             }
 
         }
-        for(int i = seed.length-1; i >= 0; i--){
-            seed[i] = sumArray[i];
-        }
+        System.arraycopy(sumArray, 0, seed, 0, seed.length - 1 + 1);
     }
 
     public static void setSeedFromString(String result) {
@@ -130,9 +119,9 @@ public class ImageController {
     }
 
     public static String getSeed() {
-        StringBuffer result = new StringBuffer();
-        for (int i = 0; i < seed.length; i++) {
-            result.append( seed[i] );
+        StringBuilder result = new StringBuilder();
+        for (int aSeed : seed) {
+            result.append(aSeed);
         }
         return result.toString();
     }
