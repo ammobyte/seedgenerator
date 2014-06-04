@@ -64,7 +64,7 @@ public class Window extends Canvas {
         g.drawImage(background, 0, 500, 500, window.getHeight()-500, null);
 
         int pre = 20;
-/*
+
         //Titles
         g.setColor(Color.cyan); g.drawString("Current:", pre, 535);
         g.setColor(Color.red); g.drawString("Speed:", pre, 550);
@@ -94,9 +94,9 @@ public class Window extends Canvas {
         g.drawString("LEFT - decrement current seed (when paused)", indent, 610);
         g.drawString("RIGHT - increment current seed (when paused)", indent, 625);
         g.drawString("S - set seed", indent, 640);
-        g.drawString("M - change mode", indent, 655);
-        g.drawString("CMD/CTRL-S - save current image", indent, 670);
-*/    }
+        g.drawString("W - write seed to disk", indent, 655);
+        g.drawString("(only write if it's not pure noise!!)", indent, 670);
+    }
 
     /**
      * Runs a loop to modify and display images
@@ -130,7 +130,7 @@ public class Window extends Canvas {
     }
 
     public static void nextFrame(){
-        currentFrame++;
+        ImageController.increaseSeed();
     }
 
     public static void previousFrame(){

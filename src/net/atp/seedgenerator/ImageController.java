@@ -2,6 +2,7 @@ package net.atp.seedgenerator;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class ImageController {
 
@@ -120,5 +121,19 @@ public class ImageController {
 
         for(int s = 0; s < result.length(); s++)
             seed[s] = Integer.parseInt(result.substring(s, s+1));
+    }
+
+    public static void setRandomSeed() {
+        Random r = new Random();
+        for(int i = 0; i < seed.length; i++)
+            seed[i] = r.nextBoolean()?1:0;
+    }
+
+    public static String getSeed() {
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < seed.length; i++) {
+            result.append( seed[i] );
+        }
+        return result.toString();
     }
 }

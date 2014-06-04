@@ -3,6 +3,10 @@ package net.atp.seedgenerator;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 public class WindowKeyListener implements KeyListener{
 
@@ -18,19 +22,51 @@ public class WindowKeyListener implements KeyListener{
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()){
             case (KeyEvent.VK_RIGHT):{  //increase seed
-                ImageController.increaseSeed();
+                if(!Window.isAnimated())
+                    ImageController.increaseSeed();
                 break;
             }
             case (KeyEvent.VK_S):{      //set seed
                 String result = JOptionPane.showInputDialog(null, "Enter seed: (0 and 1 only, up to 256 digits)", "0");
+                if(result == null) result = "0";
                 ImageController.setSeedFromString(result);
                 break;
             }
-            /*case (KeyEvent.VK_SPACE):{
+            case (KeyEvent.VK_SPACE):{
                 Window.toggleAnimated();
                 break;
             }
-            case (KeyEvent.VK_LEFT):{
+            case (KeyEvent.VK_G):{
+                ImageController.setRandomSeed();
+                break;
+            }
+            case (KeyEvent.VK_W):{
+                int response = JOptionPane.showConfirmDialog(null, "Do you want to save this image's seed?", "Save Confirmation",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                if (response == JOptionPane.NO_OPTION) {
+                    JOptionPane.showMessageDialog(null, "Seed not saved.");
+                } else if (response == JOptionPane.YES_OPTION) {
+
+                    File log = new File("seeds.txt");
+                    try{
+                        if(log.exists()==false){
+                            System.out.println("File not found. New file created.");
+                            log.createNewFile();
+                        }
+                        PrintWriter out = new PrintWriter(new FileWriter(log, true));
+                        out.append(ImageController.getSeed());
+                        out.println();
+                        out.close();
+                    }catch(IOException ioe){
+                        System.out.println("COULD NOT LOG!!");
+                    }
+
+                    JOptionPane.showMessageDialog(null, "Seed saved.");
+                }
+                break;
+            }
+            /*case (KeyEvent.VK_LEFT):{
                 if (!Window.isAnimated())
                     Window.previousFrame();
                 break;
